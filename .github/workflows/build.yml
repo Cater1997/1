@@ -139,21 +139,21 @@ jobs:
         working-directory: immortalwrt
         run: make -j$(nproc) V=s
 
-      - name: 复制 armsr 根文件系统到打包目录
+      - name: Check rootfs file exists
         run: |
-          mkdir -p openwrt-armvirt
-          cp immortalwrt/bin/targets/armsr/armv8/immortalwrt-armsr-armv8-generic-rootfs.tar.gz openwrt-armvirt/openwrt-armsr-armv8-generic-rootfs.tar.gz
+          if [ ! -f "immortalwrt/bin/targets/armsr/armv8/immortalwrt-armsr-armv8-generic-rootfs.tar.gz" ]; then
+            echo "❌ rootfs file not found!"
+            exit 1
+          fi
           
-      - name: 打包内核
-        uses: unifreq/openwrt_packit@master
+      - name: Package OpenWrt Firmware
+        uses: ophub/flippy-openwrt-actions@main
         env:
-          WHOAMI: admin
-          OPENWRT_ARMVIRT: openwrt-armvirt/openwrt-armsr-armv8-generic-rootfs.tar.gz
+          OPENWRT_ARMSR: immortalwrt/bin/targets/armsr/armv8/immortalwrt-armsr-armv8-generic-rootfs.tar.gz
           PACKAGE_SOC: e52c
-          PLATFORM: armsr
-          KERNEL_AUTO_LATEST: true
           KERNEL_REPO_URL: https://github.com/ophub/kernel
           KERNEL_VERSION_NAME: 6.1.y
+          KERNEL_AUTO_LATEST: true
           
       - name: 上传编译结果到 Artifact (Upload build result to Artifact)
         uses: actions/upload-artifact@main
