@@ -1,3 +1,32 @@
+# OpenWrt build artifacts
+/dl/
+/build_dir/
+/staging_dir/
+/bin/
+*.img
+*.gz
+*.xz
+*.manifest
+*.buildinfo
+*.vermagic
+.config.old
+*.old
+
+# IDE / editor files
+.vscode/
+.idea/
+*~
+*.swp
+*.swo
+*.bak
+*.orig
+*.tmp
+.DS_Store
+
+# GitHub Actions workflow temporary files
+!.github/workflows/*.yml
+.github/workflows/*.yml.off
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
