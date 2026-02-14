@@ -1,0 +1,162 @@
+name: 🚀 编译 (Build)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: "使用 ssh 连接到编译环境 (Connect to the build environment using ssh)"
+        type: boolean
+        default: false
+      multithreading:
+        description: "开启多线程编译 (Enable multithreading build)"
+        type: boolean
+        default: true
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 🚀 编译 (Build)
+    steps:
+      - name: 检查服务器配置
+        run: |
+          echo "警告⚠"
+          echo "分配的服务器性能有限，若选择的插件过多，务必注意CPU性能！"
+          echo "云编译建议取消勾选Node.js及其相关插件！"
+          echo "已知CPU型号（降序）：8370C,8272CL,8171M,E5系列"
+          echo "--------------------------CPU信息--------------------------"
+          echo "CPU物理数量:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+          echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+          echo "--------------------------内存信息--------------------------"
+          echo "已安装内存详细信息："
+          sudo lshw -short -C memory | grep GiB
+          echo -e "\n"
+          echo "--------------------------硬盘信息--------------------------"
+          echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+          echo "硬盘详情："
+          df -Th
+
+      - name: Optimize Disk Space
+        uses: hugoalh/disk-space-optimizer-ghaction@main
+        with:
+          operate_sudo: true
+          general_include: ".+"
+          general_exclude: |-
+            ^GCC$
+            ^G\+\+$
+            Clang
+            LLVM
+          docker_include: ".+"
+          docker_prune: true
+          docker_clean: true
+          apt_prune: true
+          apt_clean: true
+          homebrew_prune: true
+          homebrew_clean: true
+          npm_prune: true
+          npm_clean: true
+          os_swap: true
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: true
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+          
+      - name: 下载编译所需的依赖 (Install the software packages required for compilation)
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /etc/mysql /etc/php /opt/ghc /usr/share/dotnet /usr/local/lib/android
+          sudo -E apt update
+          sudo apt full-upgrade -y
+          sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gcc-multilib g++-multilib gettext git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf python3 python3-pyelftools python3-setuptools qemu-utils rsync squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
+          sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
+          sudo -E apt -y autoremove --purge
+          sudo -E apt clean
+          docker rmi $(docker images -q) 2>/dev/null || true
+          sudo -E timedatectl set-timezone "Asia/Shanghai"         
+
+      - name: 克隆当前仓库 (Clone current repo)
+        uses: actions/checkout@main
+
+      - name: 克隆 immortalwrt 仓库 (Clone immortalwrt repo)
+        uses: actions/checkout@main
+        with:
+          repository: immortalwrt/immortalwrt
+          ref: openwrt-24.10
+          path: immortalwrt
+
+      - name: 复制当前仓库的配置文件到 immortalwrt 仓库  (Copy current repo config to immortalwrt repo)
+        run: cp -f .config diy-feeds.sh diy-config.sh immortalwrt/
+
+      - name: 运行 diy-feeds.sh (Run diy-feeds.sh)
+        working-directory: immortalwrt
+        run: |
+          chmod +x diy-feeds.sh
+          ./diy-feeds.sh
+
+      - name: 更新并下载 feeds (Update and download feeds)
+        working-directory: immortalwrt
+        run: ./scripts/feeds update -a && ./scripts/feeds install -a
+
+      - name: 运行 diy-config.sh (Run diy-config.sh)
+        working-directory: immortalwrt
+        run: |
+          chmod +x diy-config.sh
+          ./diy-config.sh
+
+      - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
+        uses: csexton/debugger-action@master
+
+      - name: 下载软件包 (Download packages)
+        working-directory: immortalwrt
+        run: |
+          make defconfig
+          make download -j8
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
+
+      - name: 编译前上传配置 (Upload config before build)
+        uses: actions/upload-artifact@main
+        with:
+          name: config-before-build
+          path: |
+            immortalwrt/feeds.conf.default
+            immortalwrt/.config
+          include-hidden-files: true
+
+      - name: 多线程编译 immortalwrt (Build immortalwrt multithreading)
+        if: ${{inputs.multithreading == true}}
+        working-directory: immortalwrt
+        run: make -j$(nproc) V=s
+
+      - name: 复制 armsr 根文件系统到打包目录
+        run: |
+          mkdir -p openwrt-armvirt
+          cp immortalwrt/bin/targets/armsr/armv8/immortalwrt-armsr-armv8-generic-rootfs.tar.gz openwrt-armvirt/openwrt-armsr-armv8-generic-rootfs.tar.gz
+          
+      - name: 打包内核
+        uses: unifreq/openwrt_packit@master
+        env:
+          WHOAMI: admin
+          OPENWRT_ARMVIRT: openwrt-armvirt/openwrt-armsr-armv8-generic-rootfs.tar.gz
+          PACKAGE_SOC: e52c
+          PLATFORM: armsr
+          KERNEL_AUTO_LATEST: true
+          KERNEL_REPO_URL: https://github.com/ophub/kernel
+          KERNEL_VERSION_NAME: 6.1.y
+          
+      - name: 上传编译结果到 Artifact (Upload build result to Artifact)
+        uses: actions/upload-artifact@main
+        with:
+          name: immortalwrt-build-result
+          path: immortalwrt/bin/targets
