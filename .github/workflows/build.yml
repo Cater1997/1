@@ -103,6 +103,10 @@ jobs:
           chmod +x diy-feeds.sh
           ./diy-feeds.sh
 
+      - name: 调试 feeds.conf.default
+        working-directory: immortalwrt
+        run: cat -n feeds.conf.default
+
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
