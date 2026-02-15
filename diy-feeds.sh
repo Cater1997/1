@@ -1,14 +1,24 @@
 # 添加第三方 feed 源
-echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+echo 'src-git luci-app-accesscontrol-plus https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git;main' >>feeds.conf.default
+echo 'src-git luci-app-adbyby-plus-lite https://github.com/kongfl888/luci-app-adbyby-plus-lite.git;main' >>feeds.conf.default
+echo 'src-git luci-app-adguardhome https://github.com/stevenjoezhang/luci-app-adguardhome.git;dev' >>feeds.conf.default
+echo 'src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main' >>feeds.conf.default
+echo 'src-git luci-app-filetransfer https://github.com/DustReliant/luci-app-filetransfer.git;master' >>feeds.conf.default
+echo 'src-git helloworld https://github.com/fw876/helloworld.git;master' >>feeds.conf.default
+echo 'src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git;master' >>feeds.conf.default
+echo 'src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default
+echo 'src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main' >>feeds.conf.default
+echo 'src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci' >>feeds.conf.default
+echo 'src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package' >>feeds.conf.default
 
 # 拉取软件包
-git clone https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git package/luci-app-accesscontrol-plus
-git clone https://github.com/kongfl888/luci-app-adbyby-plus-lite.git package/luci-app-adbyby-plus-lite
-git clone https://github.com/stevenjoezhang/luci-app-adguardhome.git package/luci-app-adguardhome
-git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
-git clone https://github.com/DustReliant/luci-app-filetransfer.git package/luci-app-filetransfer
-git clone https://github.com/chenmozhijin/turboacc.git package/turboacc
+#git clone https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git package/luci-app-accesscontrol-plus
+#git clone https://github.com/kongfl888/luci-app-adbyby-plus-lite.git package/luci-app-adbyby-plus-lite
+#git clone https://github.com/stevenjoezhang/luci-app-adguardhome.git package/luci-app-adguardhome
+#git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
+#git clone https://github.com/DustReliant/luci-app-filetransfer.git package/luci-app-filetransfer
+#git clone https://github.com/sirpdboy/luci-app-netspeedtest.git package/luci-app-netspeedtest
+#git clone https://github.com/chenmozhijin/turboacc.git package/turboacc
 
 # 解锁网易云音乐相关文件下载
 NAME=$"package/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic" && mkdir -p $NAME/core
