@@ -103,9 +103,11 @@ jobs:
           chmod +x diy-feeds.sh
           ./diy-feeds.sh
 
-      - name: 调试 feeds.conf.default
+      - name: 调试 feeds.conf.default 第5行
         working-directory: immortalwrt
-        run: cat -n feeds.conf.default
+        run: |
+          echo "=== 第5行原始内容（含不可见字符）==="
+          sed -n '5l' feeds.conf.default
 
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
