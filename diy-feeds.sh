@@ -1,3 +1,9 @@
+# 编辑默认 LAN 口 IP
+sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+
+# 编辑默认固件名称
+#sed -i 's/ImmortalWrt/ImmortalWrt1/g' package/base-files/files/bin/config_generate
+
 # 添加第三方 feed 源
 echo 'src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git;main' >>feeds.conf.default
 echo 'src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main' >>feeds.conf.default
