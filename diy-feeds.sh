@@ -6,14 +6,8 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 
 # 添加第三方 feed 源
 cat >> feeds.conf.default << 'EOF'
-src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git
-src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git
+src-git adblock-rust https://github.com/brave/adblock-rust.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
-src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git
-src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git
-src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git
-src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git
-src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git
 src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
 src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
