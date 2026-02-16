@@ -117,22 +117,8 @@ jobs:
           od -tx1 -tc -w100 feeds.conf.default
           echo "=== feeds.conf.default 文件末尾"
           cat -A feeds.conf.default
-
-      - name: 调试 feeds.conf.default 第5行
-        working-directory: immortalwrt
-        run: |
-          echo "=== 原始内容（含不可见字符）==="
-          sed -n '5p' feeds.conf.default
-          sed -n '6p' feeds.conf.default
-          sed -n '7p' feeds.conf.default
-          sed -n '8p' feeds.conf.default
-          sed -n '9p' feeds.conf.default
-          sed -n '10p' feeds.conf.default
-          sed -n '11p' feeds.conf.default
-          sed -n '12p' feeds.conf.default
-          sed -n '13p' feeds.conf.default
-          sed -n '14p' feeds.conf.default
-          sed -n '15p' feeds.conf.default
+          echo "=== 第5行原始字节 ==="
+          head -n5 feeds.conf.default | tail -n1 | hexdump -C
           
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
@@ -141,6 +127,7 @@ jobs:
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
+          make defconfig
           chmod +x diy-config.sh
           ./diy-config.sh
 
@@ -148,13 +135,11 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
         uses: csexton/debugger-action@master
 
-      - name: 下载软件包 (Download packages)
+      - name: 下载软件源码包 (Download packages)
         working-directory: immortalwrt
         run: |
-          make defconfig
-          make download -j8
-          find dl -size -1024c -exec ls -l {} \;
-          find dl -size -1024c -exec rm -f {} \;
+          make download -j$(nproc)
+          find dl -size -1024c -delete
 
       - name: 编译前上传配置 (Upload config before build)
         uses: actions/upload-artifact@main
