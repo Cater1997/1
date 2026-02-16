@@ -101,6 +101,14 @@ jobs:
         run: |
           chmod +x diy-feeds.sh
           ./diy-feeds.sh
+
+       - name: 查看 feeds.conf.default 内容
+         working-directory: immortalwrt
+         run: |
+           echo "=== 文件内容 ==="
+           cat -n feeds.conf.default
+           echo "=== 原始字节 ==="
+           od -tx1 -tc -w100 feeds.conf.default
           
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
