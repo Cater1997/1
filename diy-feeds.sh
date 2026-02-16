@@ -6,20 +6,20 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 
 # 添加第三方 feed 源
 cat >> feeds.conf.default << 'EOF'
-src-git adblock-rust https://github.com/brave/adblock-rust.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
 src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
 src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
 # 拉取软件包
-#git clone -b main --single-branch https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
-#git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns.git package/luci-app-mosdns
-#git clone -b master --single-branch https://github.com/sbwml/v2ray-geodata.git package/v2ray-geodata
-#git clone -b master --single-branch https://github.com/sirpdboy/luci-app-netspeedtest.git package/luci-app-netspeedtest
-#git clone -b main --single-branch https://github.com/sirpdboy/luci-app-parentcontrol.git package/luci-app-parentcontrol
-#git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/openwrt-passwall2
-#git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
+git clone -b main --single-branch https://github.com/brave/adblock-rust.git package/adblock-rust
+git clone -b main --single-branch https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
+git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns.git package/luci-app-mosdns
+git clone -b master --single-branch https://github.com/sbwml/v2ray-geodata.git package/v2ray-geodata
+git clone -b master --single-branch https://github.com/sirpdboy/luci-app-netspeedtest.git package/luci-app-netspeedtest
+git clone -b main --single-branch https://github.com/sirpdboy/luci-app-parentcontrol.git package/luci-app-parentcontrol
+git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/openwrt-passwall2
+git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # 解锁网易云音乐相关文件下载
 NAME=$"package/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic" && mkdir -p $NAME/core
