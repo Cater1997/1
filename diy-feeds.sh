@@ -13,8 +13,8 @@ cat >> feeds.conf.default << 'EOF'
 #src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master
 #src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git;master
 #src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main
-src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
-#src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
+#src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
+src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
 src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
