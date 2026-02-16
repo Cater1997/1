@@ -1,7 +1,5 @@
 # 添加第三方 feed 源
-echo 'src-git luci-app-accesscontrol-plus https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git;main' >>feeds.conf.default
-echo 'src-git luci-app-adbyby-plus-lite https://github.com/kongfl888/luci-app-adbyby-plus-lite.git;main' >>feeds.conf.default
-echo 'src-git luci-app-adguardhome https://github.com/stevenjoezhang/luci-app-adguardhome.git;dev' >>feeds.conf.default
+echo 'src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git;main' >>feeds.conf.default
 echo 'src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main' >>feeds.conf.default
 echo 'src-git luci-app-filetransfer https://github.com/DustReliant/luci-app-filetransfer.git;master' >>feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld.git;master' >>feeds.conf.default
