@@ -34,6 +34,41 @@ jobs:
           echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
           echo "硬盘详情："
           df -Th
+
+      - name: Optimize Disk Space
+        uses: hugoalh/disk-space-optimizer-ghaction@main
+        with:
+          operate_sudo: true
+          general_include: ".+"
+          general_exclude: |-
+            ^GCC$
+            ^G\+\+$
+            Clang
+            LLVM
+          docker_include: ".+"
+          docker_prune: true
+          docker_clean: true
+          apt_prune: true
+          apt_clean: true
+          homebrew_prune: true
+          homebrew_clean: true
+          npm_prune: true
+          npm_clean: true
+          os_swap: true
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: true
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
           
       - name: 下载编译所需的依赖 (Install the software packages required for compilation)
         env:
@@ -41,7 +76,10 @@ jobs:
         run: |
           sudo -E apt update
           sudo apt full-upgrade -y
+          sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
           sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler fastjar file flex g++-multilib gawk gcc-multilib gettext git gnutls-dev gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev llvm lrzsz ninja-build p7zip p7zip-full patch pkgconf python3 python3-docutils python3-pip python3-ply python3-pyelftools python3-setuptools qemu-utils re2c rename rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl wget xmlto xxd zlib1g-dev zstd
+          sudo -E apt -y autoremove --purge
+          sudo -E apt clean
           docker rmi $(docker images -q) 2>/dev/null || true
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
@@ -56,37 +94,17 @@ jobs:
           path: immortalwrt
 
       - name: 复制当前仓库的配置文件到 immortalwrt 仓库  (Copy current repo config to immortalwrt repo)
-        run: cp -f .config feeds.conf.default diy-feeds.sh diy-config.sh immortalwrt/
+        run: cp -f .config diy-feeds.sh diy-config.sh immortalwrt/
 
       - name: 运行 diy-feeds.sh (Run diy-feeds.sh)
         working-directory: immortalwrt
         run: |
           chmod +x diy-feeds.sh
           ./diy-feeds.sh
-
-      - name: 全面调试 diy-feeds.sh 和生成的 feeds.conf.default
-        run: |
-          echo "=== diy-feeds.sh 内容 ==="
-          cat diy-feeds.sh
-          echo "=== diy-feeds.sh 换行符 ==="
-          cat -A diy-feeds.sh
-          echo "=== 进入 immortalwrt 目录 ==="
-          cd immortalwrt
-          echo "=== feeds.conf.default 内容 ==="
-          cat -n feeds.conf.default
-          echo "=== feeds.conf.default"
-          od -tx1 -tc -w100 feeds.conf.default
-          echo "=== feeds.conf.default 文件末尾"
-          cat -A feeds.conf.default
-          echo "=== 第5行原始字节 ==="
-          head -n5 feeds.conf.default | tail -n1 | hexdump -C
-          head -n5 feeds.conf.default | tail -n1 | od -c
           
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
-        run: |
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
+        run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
