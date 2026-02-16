@@ -1,7 +1,6 @@
 # 添加第三方 feed 源
 echo 'src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git;main' >>feeds.conf.default
 echo 'src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main' >>feeds.conf.default
-echo 'src-git luci-app-filetransfer https://github.com/DustReliant/luci-app-filetransfer.git;master' >>feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld.git;master' >>feeds.conf.default
 echo 'src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git;v5' >>feeds.conf.default
 echo 'src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master' >>feeds.conf.default
