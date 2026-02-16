@@ -117,6 +117,22 @@ jobs:
           od -tx1 -tc -w100 feeds.conf.default
           echo "=== feeds.conf.default 文件末尾"
           cat -A feeds.conf.default
+
+      - name: 调试 feeds.conf.default 第5行
+        working-directory: immortalwrt
+        run: |
+          echo "=== 原始内容（含不可见字符）==="
+          sed -n '5p' feeds.conf.default
+          sed -n '6p' feeds.conf.default
+          sed -n '7p' feeds.conf.default
+          sed -n '8p' feeds.conf.default
+          sed -n '9p' feeds.conf.default
+          sed -n '10p' feeds.conf.default
+          sed -n '11p' feeds.conf.default
+          sed -n '12p' feeds.conf.default
+          sed -n '13p' feeds.conf.default
+          sed -n '14p' feeds.conf.default
+          sed -n '15p' feeds.conf.default
           
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
