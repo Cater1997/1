@@ -46,10 +46,10 @@ jobs:
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
       - name: 克隆当前仓库 (Clone current repo)
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
 
       - name: 克隆 immortalwrt 仓库 (Clone immortalwrt repo)
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
         with:
           repository: immortalwrt/immortalwrt
           ref: openwrt-24.10
