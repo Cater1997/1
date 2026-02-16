@@ -9,8 +9,8 @@ cat >> feeds.conf.default << 'EOF'
 #src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git;main
 #src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main
 #src-git helloworld https://github.com/fw876/helloworld.git;master
-src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git;v5
-#src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master
+#src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git;v5
+src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master
 #src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git;master
 #src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main
 #src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
