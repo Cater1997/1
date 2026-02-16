@@ -3,9 +3,11 @@ echo 'src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parent
 echo 'src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main' >>feeds.conf.default
 echo 'src-git luci-app-filetransfer https://github.com/DustReliant/luci-app-filetransfer.git;master' >>feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld.git;master' >>feeds.conf.default
+echo 'src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git;v5' >>feeds.conf.default
+echo 'src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master' >>feeds.conf.default
 echo 'src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git;master' >>feeds.conf.default
-echo 'src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default
 echo 'src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main' >>feeds.conf.default
+echo 'src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default
 echo 'src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci' >>feeds.conf.default
 echo 'src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package' >>feeds.conf.default
 
