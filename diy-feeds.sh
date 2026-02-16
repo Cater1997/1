@@ -5,17 +5,21 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 #sed -i 's/ImmortalWrt/ImmortalWrt1/g' package/base-files/files/bin/config_generate
 
 # 添加第三方 feed 源
-cat >> feeds.conf.default << 'EOF'
-src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git^main
-src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git^main
-src-git helloworld https://github.com/fw876/helloworld.git^master
-src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns.git^v5
-src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git^master
-src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git^master
-src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git^main
-src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git^main
-src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git^luci
-src-git turboacc_package https://github.com/chenmozhijin/turboacc.git^package
+cat > feeds.conf.default << 'EOF'
+src-git packages https://github.com/immortalwrt/packages.git;openwrt-24.10
+src-git luci https://github.com/immortalwrt/luci.git;openwrt-24.10
+src-git routing https://github.com/openwrt/routing.git;openwrt-24.10
+src-git telephony https://github.com/openwrt/telephony.git;openwrt-24.10
+src-git luci-app-parentcontrol https://github.com/sirpdboy/luci-app-parentcontrol.git;main
+src-git luci-app-amlogic https://github.com/ophub/luci-app-amlogic.git;main
+src-git helloworld https://github.com/fw876/helloworld.git;master
+src-git luci-app-mosdns https://github.com/sbwml/luci-app-mosdns;git^v5
+src-git v2ray-geodata https://github.com/sbwml/v2ray-geodata.git;master
+src-git luci-app-netspeedtest https://github.com/sirpdboy/luci-app-netspeedtest.git;master
+src-git openwrt-passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main
+src-git openwrt-passwall-packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
+src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
+src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
 # 拉取软件包
