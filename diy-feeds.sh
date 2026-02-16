@@ -19,11 +19,7 @@ src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
 # 拉取软件包
-#git clone https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git package/luci-app-accesscontrol-plus
-#git clone https://github.com/kongfl888/luci-app-adbyby-plus-lite.git package/luci-app-adbyby-plus-lite
-#git clone https://github.com/stevenjoezhang/luci-app-adguardhome.git package/luci-app-adguardhome
 #git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
-#git clone https://github.com/DustReliant/luci-app-filetransfer.git package/luci-app-filetransfer
 #git clone https://github.com/sirpdboy/luci-app-netspeedtest.git package/luci-app-netspeedtest
 #git clone https://github.com/chenmozhijin/turboacc.git package/turboacc
 
