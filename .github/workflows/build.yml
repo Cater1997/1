@@ -119,6 +119,7 @@ jobs:
           cat -A feeds.conf.default
           echo "=== 第5行原始字节 ==="
           head -n5 feeds.conf.default | tail -n1 | hexdump -C
+          head -n5 feeds.conf.default | tail -n1 | od -c
           
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
