@@ -44,6 +44,9 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 ./scripts/config --set-str CONFIG_RUSTC "$HOME/.cargo/bin/rustc"
 ./scripts/config --set-str CONFIG_CARGO "$HOME/.cargo/bin/cargo"
 
+# 尝试禁用 rust 包本身（避免自编译）
+./scripts/config --disable CONFIG_PACKAGE_rust
+
 # 修改 luci-app-amlogic 配置
 sed -i 's#https://github.com/breakings/OpenWrt#https://github.com/ophub/kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 sed -i 's#opt/kernel#kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
