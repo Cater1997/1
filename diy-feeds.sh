@@ -12,7 +12,6 @@ src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
 # 拉取软件包
-git clone -b main --single-branch https://github.com/brave/adblock-rust.git package/adblock-rust
 git clone -b main --single-branch https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns.git package/luci-app-mosdns
 git clone -b master --single-branch https://github.com/sbwml/v2ray-geodata.git package/v2ray-geodata
