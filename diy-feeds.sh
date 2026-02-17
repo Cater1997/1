@@ -5,7 +5,10 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 #sed -i 's/ImmortalWrt/ImmortalWrt1/g' package/base-files/files/bin/config_generate
 
 # 添加第三方 feed 源
-cat >> feeds.conf.default << 'EOF'
+cat > feeds.conf.default << 'EOF'
+src-git packages https://github.com/immortalwrt/packages.git;master
+src-git luci https://github.com/immortalwrt/luci.git;master
+src-git routing https://github.com/openwrt/routing.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
 src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
 src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
