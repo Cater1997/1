@@ -83,6 +83,13 @@ jobs:
           docker rmi $(docker images -q) 2>/dev/null || true
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
+      - name: 安装 Rust 工具链 (Install Rust toolchain)
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          rustup default stable
+          rustup target add aarch64-unknown-linux-musl
+          
       - name: 克隆当前仓库 (Clone current repo)
         uses: actions/checkout@main
 
@@ -105,6 +112,14 @@ jobs:
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
+
+      - name: 缓存 Cargo 依赖
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ hashFiles('immortalwrt/**/Cargo.lock') }}
 
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
