@@ -154,6 +154,13 @@ jobs:
         if: ${{inputs.multithreading == true}}
         working-directory: immortalwrt
         run: make -j1 V=s
+
+      - name: 上传编译日志
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: immortalwrt/build.log
           
       - name: Package OpenWrt Firmware
         uses: ophub/flippy-openwrt-actions@main
