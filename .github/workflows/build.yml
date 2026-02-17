@@ -128,6 +128,17 @@ jobs:
           chmod +x diy-config.sh
           ./diy-config.sh
 
+      - name: 设置 Rust 环境变量
+        run: |
+          echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
+          echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
+
+      - name: 检查 Rust 配置
+        working-directory: immortalwrt
+        run: |
+          echo "=== Rust 相关配置 ==="
+          grep -E "CONFIG_(RUST|PACKAGE_rust)" .config || echo "未找到相关配置"
+
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
         uses: csexton/debugger-action@master
@@ -150,7 +161,7 @@ jobs:
       - name: 多线程编译 immortalwrt (Build immortalwrt multithreading)
         if: ${{inputs.multithreading == true}}
         working-directory: immortalwrt
-        run: make -j$(nproc) V=s
+        run: make -j1 V=s
           
       - name: Package OpenWrt Firmware
         uses: ophub/flippy-openwrt-actions@main
