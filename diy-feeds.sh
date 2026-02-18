@@ -25,12 +25,22 @@ git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-pa
 curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 rm -f add_turboacc.sh
 
-# 解锁网易云音乐相关文件下载
-NAME=$"package/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic" && mkdir -p $NAME/core
-curl -L 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' -o commits.json
-echo "$(grep sha commits.json | sed -n "1,1p" | cut -c 13-52)">"$NAME/core_local_ver"
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/app.js -o $NAME/core/app.js
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/precompiled/bridge.js -o $NAME/core/bridge.js
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/ca.crt -o $NAME/core/ca.crt
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.crt -o $NAME/core/server.crt
-curl -L https://github.com/UnblockNeteaseMusic/server/raw/enhanced/server.key -o $NAME/core/server.key
+# 下载 luci-app-bandix
+#echo "正在获取最新版 bandix 后端下载地址..."
+#BANDIX_LATEST_URL=$(curl -s https://api.github.com/repos/timsaya/bandix/releases/latest | grep "browser_download_url.*aarch64_generic\.apk" | head -1 | cut -d '"' -f 4)
+#if [ -z "$BANDIX_LATEST_URL" ]; then
+    #echo "错误：无法获取 bandix 后端下载地址"
+    #exit 1
+#fi
+#echo "后端下载地址: $BANDIX_LATEST_URL"
+#curl -L -f -o files/bandix_latest_aarch64_generic.apk \
+    #"$BANDIX_LATEST_URL"
+#echo "正在获取最新版 luci-app-bandix 前端下载地址..."
+#LUCI_BANDIX_LATEST_URL=$(curl -s https://api.github.com/repos/timsaya/luci-app-bandix/releases/latest | grep "browser_download_url.*all\.ipk" | head -1 | cut -d '"' -f 4)
+#if [ -z "$LUCI_BANDIX_LATEST_URL" ]; then
+    #echo "错误：无法获取 luci-app-bandix 前端下载地址"
+    #exit 1
+#fi
+#echo "前端下载地址: $LUCI_BANDIX_LATEST_URL"
+#curl -L -f -o files/luci-app-bandix_latest_all.ipk \
+    #"$LUCI_BANDIX_LATEST_URL"
