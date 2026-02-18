@@ -133,7 +133,6 @@ jobs:
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
-          make defconfig
           chmod +x diy-config.sh
           ./diy-config.sh
 
