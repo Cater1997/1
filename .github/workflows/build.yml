@@ -123,6 +123,19 @@ jobs:
           echo "🔍 搜索包含包名的目录..."
           find . -type d -name "*nft-fullcone*" || echo "未找到匹配目录"
 
+      - name: 修复 kmod-nft-fullcone 递归依赖
+        working-directory: immortalwrt
+        run: |
+          PKG_PATH="feeds/turboacc_package/nft-fullcone"
+          if [ -d "$PKG_PATH" ]; then
+            [ -f "$PKG_PATH/Makefile" ] && sed -i '/select.*PACKAGE_kmod-nft-fullcone/d; /depends on.*PACKAGE_kmod-nft-fullcone/d' "$PKG_PATH/Makefile"
+            [ -f "$PKG_PATH/Kconfig" ] && sed -i '/select.*PACKAGE_kmod-nft-fullcone/d; /depends on.*PACKAGE_kmod-nft-fullcone/d' "$PKG_PATH/Kconfig"
+            echo "✅ 修复完成"
+          else
+            echo "❌ 未找到包目录，请检查"
+            exit 1
+          fi
+
       - name: 修复 luci-app-turboacc 的递归依赖
         working-directory: immortalwrt
         run: |
