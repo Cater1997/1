@@ -1,28 +1,3 @@
-# 修改登录用户名（将 root 改为 admin）
-
-# 1.修改系统账户文件
-sed -i 's/^root:/admin:/' package/base-files/files/etc/passwd
-sed -i 's/^root:/admin:/' package/base-files/files/etc/shadow
-
-# 2.修改权限配置
-sed -i 's/option username '"'"'root'"'"'/option username '"'"'admin'"'"'/' package/system/rpcd/files/rpcd.config
-
-# 3.修改 LuCI 控制器
-sed -i 's/duser: '"'"'root'"'"'/duser: '"'"'admin'"'"'/' feeds/luci/modules/luci-base/ucode/dispatcher.uc 2>/dev/null || true
-sed -i 's/duser: '"'"'root'"'"'/duser: '"'"'admin'"'"'/' package/feeds/luci/luci-base/ucode/dispatcher.uc 2>/dev/null || true
-
-# 4.修改旧版 Lua 控制器
-sed -i 's/sysauth": "root"/sysauth": "admin"/' feeds/luci/modules/luci-base/luasrc/controller/admin/index.lua 2>/dev/null || true
-sed -i 's/sysauth = "root"/sysauth = "admin"/' feeds/luci/modules/luci-base/luasrc/controller/admin/servicectl.lua 2>/dev/null || true
-
-# 5.移除登录页面预填的 "root" 用户名
-if [ -f "feeds/luci/modules/luci-base/htdocs/luci-static/resources/view/sysauth.js" ]; then
-  sed -i 's/placeholder: /placeholder: '"'"'admin'"'"', /' feeds/luci/modules/luci-base/htdocs/luci-static/resources/view/sysauth.js
-else
-# 6.旧版 HTML 方式
-  find feeds/luci -name "sysauth.htm" -exec sed -i 's/value="<%=duser%>"/value="admin"/' {} \;
-fi
-
 # 编辑默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
