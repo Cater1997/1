@@ -10,8 +10,6 @@ src-git packages https://github.com/immortalwrt/packages.git;master
 src-git luci https://github.com/immortalwrt/luci.git;master
 src-git routing https://github.com/openwrt/routing.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
-src-git turboacc_luci https://github.com/chenmozhijin/turboacc.git;luci
-src-git turboacc_package https://github.com/chenmozhijin/turboacc.git;package
 EOF
 
 # 拉取软件包
@@ -22,6 +20,10 @@ git clone -b master --single-branch https://github.com/sirpdboy/luci-app-netspee
 git clone -b main --single-branch https://github.com/sirpdboy/luci-app-parentcontrol.git package/luci-app-parentcontrol
 git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/openwrt-passwall2
 git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
+
+# 添加turboacc
+curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
+rm -f add_turboacc.sh
 
 # 解锁网易云音乐相关文件下载
 NAME=$"package/luci-app-unblockneteasemusic/root/usr/share/unblockneteasemusic" && mkdir -p $NAME/core
