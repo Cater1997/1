@@ -113,6 +113,22 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
+      - name: 修复 luci-app-turboacc 的递归依赖
+        working-directory: immortalwrt
+        run: |
+          TURBOACC_MAKEFILE="feeds/turboacc_luci/luci-app-turboacc/Makefile"
+          if [ -f "$TURBOACC_MAKEFILE" ]; then
+            echo "正在修复 $TURBOACC_MAKEFILE ..."
+            sed -i '/DEPENDS/s/+PACKAGE_luci-app-turboacc//g' "$TURBOACC_MAKEFILE"
+            sed -i '/PKG_CONFIG_DEPENDS/s/CONFIG_PACKAGE_luci-app-turboacc//g' "$TURBOACC_MAKEFILE"
+            sed -i '/DEPENDS.*PACKAGE_luci-app-turboacc/d' "$TURBOACC_MAKEFILE"
+            echo "修复完成。修改后的 DEPENDS 行："
+            grep -E '^DEPENDS|^PKG_CONFIG_DEPENDS' "$TURBOACC_MAKEFILE" || echo "未找到相关行"
+          else
+            echo "错误：未找到 $TURBOACC_MAKEFILE"
+            exit 1
+          fi
+
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
