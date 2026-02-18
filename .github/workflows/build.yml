@@ -113,6 +113,16 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
+      - name: 查找 kmod-nft-fullcone 位置
+        working-directory: immortalwrt
+        run: |
+          echo "🔍 在 Makefile 中搜索包名..."
+          grep -r --include="Makefile" "kmod-nft-fullcone" . || echo "未在 Makefile 中找到"
+          echo "🔍 在 .mk 文件中搜索（内核模块定义）..."
+          grep -r --include="*.mk" "kmod-nft-fullcone" . || echo "未在 .mk 文件中找到"
+          echo "🔍 搜索包含包名的目录..."
+          find . -type d -name "*nft-fullcone*" || echo "未找到匹配目录"
+
       - name: 修复 luci-app-turboacc 的递归依赖
         working-directory: immortalwrt
         run: |
