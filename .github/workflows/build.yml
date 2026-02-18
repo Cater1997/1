@@ -113,45 +113,6 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
-      - name: 查找 kmod-nft-fullcone 位置
-        working-directory: immortalwrt
-        run: |
-          echo "🔍 在 Makefile 中搜索包名..."
-          grep -r --include="Makefile" "kmod-nft-fullcone" . || echo "未在 Makefile 中找到"
-          echo "🔍 在 .mk 文件中搜索（内核模块定义）..."
-          grep -r --include="*.mk" "kmod-nft-fullcone" . || echo "未在 .mk 文件中找到"
-          echo "🔍 搜索包含包名的目录..."
-          find . -type d -name "*nft-fullcone*" || echo "未找到匹配目录"
-
-      - name: 修复 kmod-nft-fullcone 递归依赖
-        working-directory: immortalwrt
-        run: |
-          PKG_PATH="feeds/turboacc_package/nft-fullcone"
-          if [ -d "$PKG_PATH" ]; then
-            [ -f "$PKG_PATH/Makefile" ] && sed -i '/select.*PACKAGE_kmod-nft-fullcone/d; /depends on.*PACKAGE_kmod-nft-fullcone/d' "$PKG_PATH/Makefile"
-            [ -f "$PKG_PATH/Kconfig" ] && sed -i '/select.*PACKAGE_kmod-nft-fullcone/d; /depends on.*PACKAGE_kmod-nft-fullcone/d' "$PKG_PATH/Kconfig"
-            echo "✅ 修复完成"
-          else
-            echo "❌ 未找到包目录，请检查"
-            exit 1
-          fi
-
-      - name: 修复 luci-app-turboacc 递归依赖
-        working-directory: immortalwrt
-        run: |
-          TURBOACC_MAKEFILE="feeds/turboacc_luci/luci-app-turboacc/Makefile"
-          if [ -f "$TURBOACC_MAKEFILE" ]; then
-            echo "正在修复 $TURBOACC_MAKEFILE ..."
-            sed -i '/DEPENDS/s/+PACKAGE_luci-app-turboacc//g' "$TURBOACC_MAKEFILE"
-            sed -i '/PKG_CONFIG_DEPENDS/s/CONFIG_PACKAGE_luci-app-turboacc//g' "$TURBOACC_MAKEFILE"
-            sed -i '/DEPENDS.*PACKAGE_luci-app-turboacc/d' "$TURBOACC_MAKEFILE"
-            echo "修复完成。修改后的 DEPENDS 行："
-            grep -E '^DEPENDS|^PKG_CONFIG_DEPENDS' "$TURBOACC_MAKEFILE" || echo "未找到相关行"
-          else
-            echo "错误：未找到 $TURBOACC_MAKEFILE"
-            exit 1
-          fi
-
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
