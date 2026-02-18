@@ -22,7 +22,7 @@ git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-pa
 git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
 # 添加turboacc
-curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
+curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 rm -f add_turboacc.sh
 
 # 解锁网易云音乐相关文件下载
