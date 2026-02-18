@@ -136,7 +136,7 @@ jobs:
             exit 1
           fi
 
-      - name: 修复 luci-app-turboacc 的递归依赖
+      - name: 修复 luci-app-turboacc 递归依赖
         working-directory: immortalwrt
         run: |
           TURBOACC_MAKEFILE="feeds/turboacc_luci/luci-app-turboacc/Makefile"
