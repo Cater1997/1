@@ -26,13 +26,14 @@ fi
 # 编辑默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
-# 取消与 E52C 无关的软件包
+# 取消软件包
 ./scripts/config --disable CONFIG_PACKAGE_arm-trusted-firmware-microchipsw
 ./scripts/config --disable CONFIG_PACKAGE_audit
 ./scripts/config --disable CONFIG_PACKAGE_auditd
 ./scripts/config --disable CONFIG_PACKAGE_autosamba
 ./scripts/config --disable CONFIG_BUSYBOX_CONFIG_PAM
 ./scripts/config --disable CONFIG_BUSYBOX_CONFIG_RPC
+./scripts/config --disable CONFIG_PACKAGE_gst1-plugins-base
 ./scripts/config --disable CONFIG_PACKAGE_kexec-tools
 ./scripts/config --disable CONFIG_PACKAGE_lldpd
 ./scripts/config --disable CONFIG_PACKAGE_onionshare-cli
