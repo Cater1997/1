@@ -20,10 +20,10 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 ./scripts/config --set-str CONFIG_RUSTC "$HOME/.cargo/bin/rustc"
 ./scripts/config --set-str CONFIG_CARGO "$HOME/.cargo/bin/cargo"
 
-# 启用从源码构建标准库
+# Rust 从源码构建标准库
 ./scripts/config --enable CONFIG_RUSTC_BUILD_STD
 
-# 尝试禁用 rust 包
+# 禁用 Rust 包
 ./scripts/config --disable CONFIG_PACKAGE_rust
 
 # 修改 luci-app-amlogic 配置
