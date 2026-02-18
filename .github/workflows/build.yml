@@ -125,17 +125,6 @@ jobs:
           echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
           echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
 
-      - name: 检查 Rust 配置
-        working-directory: immortalwrt
-        run: |
-          echo "=== 所有包含 RUST 的配置 ==="
-          grep -i "RUST" .config || echo "未找到相关配置"
-          echo ""
-          echo "=== 关键外部工具链配置 ==="
-          ./scripts/config --state CONFIG_RUSTC_EXTERNAL
-          ./scripts/config --state CONFIG_RUSTC
-          ./scripts/config --state CONFIG_CARGO
-
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
         uses: csexton/debugger-action@master
