@@ -125,14 +125,6 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
-      - name: 恢复 scripts/config
-        working-directory: immortalwrt
-        run: |
-          rm -rf scripts/config
-          curl -L -o scripts/config https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/scripts/config
-          ls -l scripts/config
-          file scripts/config
-
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
