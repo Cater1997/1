@@ -125,6 +125,18 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
+      - name: 修复 scripts/config 文件
+        working-directory: immortalwrt
+        run: |
+          if [ -d "scripts/config" ]; then
+            echo "⚠️ scripts/config 是目录，正在修复..."
+            rm -rf scripts/config
+            git checkout scripts/config
+          fi
+          chmod +x scripts/config
+          ls -l scripts/config
+          file scripts/config
+
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
