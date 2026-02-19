@@ -11,7 +11,7 @@ on:
         description: "开启多线程编译 (Enable multithreading build)"
         type: boolean
         default: true
-        
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -69,7 +69,7 @@ jobs:
           haskell: true
           large-packages: true
           swap-storage: true
-          
+
       - name: 下载编译所需的依赖 (Install the software packages required for compilation)
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -101,7 +101,7 @@ jobs:
           echo "PATH=/usr/local/go/bin:$PATH" >> $GITHUB_ENV
           export PATH=/usr/local/go/bin:$PATH
           go version
-          
+
       - name: 克隆当前仓库 (Clone current repo)
         uses: actions/checkout@main
 
@@ -120,10 +120,19 @@ jobs:
         run: |
           chmod +x diy-feeds.sh
           ./diy-feeds.sh
-          
+
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
+
+      - name: 修复 scripts/config 文件
+        working-directory: immortalwrt
+        run: |
+          if [ -d "scripts/config" ]; then
+            echo "检测到 scripts/config 是目录，正在删除..."
+            rm -rf scripts/config
+            git checkout -- scripts/config
+          fi
 
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
@@ -135,7 +144,7 @@ jobs:
         run: |
           echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
           echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
-          
+      
       - name: 检查 Rust 配置
         working-directory: immortalwrt
         run: |
@@ -166,7 +175,7 @@ jobs:
         if: ${{inputs.multithreading == true}}
         working-directory: immortalwrt
         run: make -j1 V=s
-        
+     
       - name: Package OpenWrt Firmware
         uses: ophub/flippy-openwrt-actions@main
         env:
@@ -194,7 +203,7 @@ jobs:
           ENABLE_WIFI_K510: 0
           DISTRIB_REVISION: R$(date +%m.%d)
           DISTRIB_DESCRIPTION: ImmortalWrt
-          
+   
       - name: 上传编译结果到 Artifact (Upload build result to Artifact)
         uses: actions/upload-artifact@main
         with:
