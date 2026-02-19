@@ -125,16 +125,6 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
-      - name: 检查 scripts/config 状态
-        working-directory: immortalwrt
-        run: |
-          if [ -d "scripts/config" ]; then
-            echo "✅ scripts/config 是源码目录（正常）"
-            ls -l scripts/config
-          else
-            echo "⚠️ scripts/config 不是目录，可能异常"
-          fi
-
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
         run: |
