@@ -83,12 +83,13 @@ jobs:
           docker rmi $(docker images -q) 2>/dev/null || true
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
-      - name: 安装 Rust 工具链
+      - name: 安装 Rust 工具链 (nightly + rust-src)
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           source "$HOME/.cargo/env"
-          rustup default stable
+          rustup default nightly
+          rustup component add rust-src
           rustc --version
           cargo --version
           
@@ -125,6 +126,12 @@ jobs:
         run: |
           echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
           echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
+      - name: 检查 Rust 配置
+        working-directory: immortalwrt
+        run: |
+          grep -E "CONFIG_RUSTC_(EXTERNAL|BUILD_STD)" .config || echo "Not found"
+          grep "CONFIG_RUSTC=" .config
+          grep "CONFIG_CARGO=" .config
 
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
