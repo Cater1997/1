@@ -28,23 +28,3 @@ sed -i 's#opt/kernel#kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/et
 # 添加turboacc
 curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 rm -f add_turboacc.sh
-
-# 下载 luci-app-bandix
-#echo "正在获取最新版 bandix 后端下载地址..."
-#BANDIX_LATEST_URL=$(curl -s https://api.github.com/repos/timsaya/bandix/releases/latest | grep "browser_download_url.*aarch64_generic\.apk" | head -1 | cut -d '"' -f 4)
-#if [ -z "$BANDIX_LATEST_URL" ]; then
-    #echo "错误：无法获取 bandix 后端下载地址"
-    #exit 1
-#fi
-#echo "后端下载地址: $BANDIX_LATEST_URL"
-#curl -L -f -o files/bandix_latest_aarch64_generic.apk \
-    #"$BANDIX_LATEST_URL"
-#echo "正在获取最新版 luci-app-bandix 前端下载地址..."
-#LUCI_BANDIX_LATEST_URL=$(curl -s https://api.github.com/repos/timsaya/luci-app-bandix/releases/latest | grep "browser_download_url.*all\.ipk" | head -1 | cut -d '"' -f 4)
-#if [ -z "$LUCI_BANDIX_LATEST_URL" ]; then
-    #echo "错误：无法获取 luci-app-bandix 前端下载地址"
-    #exit 1
-#fi
-#echo "前端下载地址: $LUCI_BANDIX_LATEST_URL"
-#curl -L -f -o files/luci-app-bandix_latest_all.ipk \
-    #"$LUCI_BANDIX_LATEST_URL"
