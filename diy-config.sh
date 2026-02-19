@@ -1,5 +1,5 @@
-# 编辑默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+# 设置默认主题
+./scripts/config --set-str CONFIG_LUCI_DEFAULT_THEME luci-theme-argon
 
 # 取消软件包
 ./scripts/config --disable CONFIG_PACKAGE_arm-trusted-firmware-microchipsw
