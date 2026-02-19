@@ -83,7 +83,7 @@ jobs:
           docker rmi $(docker images -q) 2>/dev/null || true
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
-      - name: 安装 Rust 工具链 (nightly + rust-src)
+      - name: 安装 Rust 工具链
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
@@ -92,6 +92,14 @@ jobs:
           rustup component add rust-src
           rustc --version
           cargo --version
+
+      - name: 安装 Go 工具链
+        run: |
+          wget https://go.dev/dl/go1.26.0.linux-amd64.tar.gz
+          sudo tar -C /usr/local -xzf go1.26.0.linux-amd64.tar.gz
+          echo "GOROOT_BOOTSTRAP=/usr/local/go" >> $GITHUB_ENV
+          echo "PATH=/usr/local/go/bin:$PATH" >> $GITHUB_ENV
+          go version
           
       - name: 克隆当前仓库 (Clone current repo)
         uses: actions/checkout@main
@@ -126,6 +134,7 @@ jobs:
         run: |
           echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
           echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
+          
       - name: 检查 Rust 配置
         working-directory: immortalwrt
         run: |
