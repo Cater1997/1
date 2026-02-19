@@ -35,27 +35,6 @@ jobs:
           echo "硬盘详情："
           df -Th
 
-      - name: Optimize Disk Space
-        uses: hugoalh/disk-space-optimizer-ghaction@main
-        with:
-          operate_sudo: true
-          general_include: ".+"
-          general_exclude: |-
-            ^GCC$
-            ^G\+\+$
-            Clang
-            LLVM
-          docker_include: ".+"
-          docker_prune: true
-          docker_clean: true
-          apt_prune: true
-          apt_clean: true
-          homebrew_prune: true
-          homebrew_clean: true
-          npm_prune: true
-          npm_clean: true
-          os_swap: true
-
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
@@ -77,30 +56,11 @@ jobs:
           sudo -E apt update
           sudo apt full-upgrade -y
           sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
-          sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler fastjar file flex g++-multilib gawk gcc-multilib gettext git gnutls-dev gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev llvm lrzsz ninja-build p7zip p7zip-full patch pkgconf python3 python3-docutils python3-pip python3-ply python3-pyelftools python3-setuptools qemu-utils re2c rename rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl wget xmlto xxd zlib1g-dev zstd
+          sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2  cargo ccache clang cmake cpio curl device-tree-compiler fastjar file flex g++-multilib gawk gcc-multilib gettext git gnutls-dev golang-go gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev llvm lrzsz ninja-build p7zip p7zip-full patch pkgconf python3 python3-docutils python3-pip python3-ply python3-pyelftools python3-setuptools qemu-utils re2c rename rsync rustc scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl wget xmlto xxd zlib1g-dev zstd
           sudo -E apt -y autoremove --purge
           sudo -E apt clean
           docker rmi $(docker images -q) 2>/dev/null || true
           sudo -E timedatectl set-timezone "Asia/Shanghai"
-
-      - name: 安装 Rust 工具链
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          source "$HOME/.cargo/env"
-          rustup default nightly
-          rustup component add rust-src
-          rustc --version
-          cargo --version
-
-      - name: 安装 Go 工具链
-        run: |
-          wget https://go.dev/dl/go1.26.0.linux-amd64.tar.gz
-          sudo tar -C /usr/local -xzf go1.26.0.linux-amd64.tar.gz
-          echo "GOROOT_BOOTSTRAP=/usr/local/go" >> $GITHUB_ENV
-          echo "PATH=/usr/local/go/bin:$PATH" >> $GITHUB_ENV
-          export PATH=/usr/local/go/bin:$PATH
-          go version
 
       - name: 克隆当前仓库 (Clone current repo)
         uses: actions/checkout@main
@@ -130,18 +90,6 @@ jobs:
         run: |
           chmod +x diy-config.sh
           ./diy-config.sh
-
-      - name: 设置 Rust 环境变量
-        run: |
-          echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
-          echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
-      
-      - name: 检查 Rust 配置
-        working-directory: immortalwrt
-        run: |
-          grep -E "CONFIG_RUSTC_(EXTERNAL|BUILD_STD)" .config || echo "Not found"
-          grep "CONFIG_RUSTC=" .config
-          grep "CONFIG_CARGO=" .config
 
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
