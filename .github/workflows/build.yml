@@ -125,12 +125,11 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
-      - name: 恢复 scripts/config
+      - name: 恢复 scripts/config 脚本
         working-directory: immortalwrt
         run: |
           rm -rf scripts/config
-          git checkout HEAD -- scripts/config
-          chmod +x scripts/config
+          curl -L -o scripts/config https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/scripts/config
           ls -l scripts/config
           file scripts/config
 
