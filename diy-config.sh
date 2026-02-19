@@ -21,7 +21,3 @@
 ./scripts/config --set-str CONFIG_CARGO "$HOME/.cargo/bin/cargo"
 ./scripts/config --enable CONFIG_RUSTC_BUILD_STD
 ./scripts/config --disable CONFIG_PACKAGE_rust
-
-# 修改 luci-app-amlogic 配置
-sed -i 's#https://github.com/breakings/OpenWrt#https://github.com/ophub/kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
-sed -i 's#opt/kernel#kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
