@@ -125,7 +125,7 @@ jobs:
         working-directory: immortalwrt
         run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
-      - name: 恢复 scripts/config 脚本
+      - name: 恢复 scripts/config
         working-directory: immortalwrt
         run: |
           rm -rf scripts/config
