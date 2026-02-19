@@ -21,6 +21,10 @@ git clone -b main --single-branch https://github.com/sirpdboy/luci-app-parentcon
 git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/openwrt-passwall2
 git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
 
+# 修改 luci-app-amlogic 配置
+sed -i 's#https://github.com/breakings/OpenWrt#https://github.com/ophub/kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
+sed -i 's#opt/kernel#kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
+
 # 添加turboacc
 curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 rm -f add_turboacc.sh
@@ -44,7 +48,3 @@ rm -f add_turboacc.sh
 #echo "前端下载地址: $LUCI_BANDIX_LATEST_URL"
 #curl -L -f -o files/luci-app-bandix_latest_all.ipk \
     #"$LUCI_BANDIX_LATEST_URL"
-
-# 修改 luci-app-amlogic 配置
-sed -i 's#https://github.com/breakings/OpenWrt#https://github.com/ophub/kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
-sed -i 's#opt/kernel#kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
