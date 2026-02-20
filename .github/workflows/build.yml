@@ -146,6 +146,11 @@ jobs:
         if: ${{inputs.multithreading == true}}
         working-directory: immortalwrt
         run: make -j$(nproc) V=s
+
+      - name: 单线程编译 immortalwrt (Build immortalwrt single thread)
+        if: ${{inputs.multithreading == false}}
+        working-directory: immortalwrt
+        run: make -j1 V=s
      
       - name: Package OpenWrt Firmware
         uses: ophub/flippy-openwrt-actions@main
