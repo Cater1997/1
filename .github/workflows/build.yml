@@ -38,33 +38,42 @@ jobs:
       - name: Optimize Disk Space
         uses: hugoalh/disk-space-optimizer-ghaction@main
         with:
-          operate_sudo: false
-          general_include: ""
-          general_exclude: ""
+          operate_async: true
+          operate_sudo: true
+          general_include: ".+"
+          # general_exclude
           docker_include: ".+"
           docker_prune: true
           docker_clean: true
-          apt_prune: false
-          apt_clean: false
+          apt_enable: true
+          apt_prune: true
+          apt_clean: true
+          chocolatey_enable: true
+          homebrew_enable: true
           homebrew_prune: true
           homebrew_clean: true
+          npm_enable: true
           npm_prune: true
           npm_clean: true
+          pipx_enable: true
+          wmic_enable: true
+          fs_enable: true
           os_swap: true
 
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
+      - name: Free Disk Space
+        uses: endersonmenezes/free-disk-space@main
         with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          swap-storage: true
+          remove_android: true
+          remove_dotnet: true
+          remove_haskell: true
+          remove_tool_cache: true
+          remove_swap: true
+          remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
+          remove_packages_one_command: true
+          remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
+          rm_cmd: "rmz"
+          rmz_version: "latest"
+          testing: false
 
       - name: 下载编译所需的依赖 (Install the software packages required for compilation)
         env:
@@ -72,7 +81,7 @@ jobs:
         run: |
           sudo -E apt update
           sudo apt full-upgrade -y
-          sudo -E apt -y purge azure-cli* docker* ghc* zulu* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
+          sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
           sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2  cargo ccache clang cmake cpio curl device-tree-compiler fastjar file flex g++-multilib gawk gcc-multilib gettext git gnutls-dev gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev llvm lrzsz ninja-build p7zip p7zip-full patch pkgconf python3 python3-docutils python3-pip python3-ply python3-pyelftools python3-setuptools qemu-utils re2c rename rsync rustc scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl wget xmlto xxd zlib1g-dev zstd
           sudo -E apt -y autoremove --purge
           sudo -E apt clean
