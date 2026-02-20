@@ -39,12 +39,8 @@ jobs:
         uses: hugoalh/disk-space-optimizer-ghaction@main
         with:
           operate_sudo: false
-          general_include: ".+"
-          general_exclude: |-
-            ^GCC$
-            ^G\+\+$
-            Clang
-            LLVM
+          general_include: ""
+          general_exclude: ""
           docker_include: ".+"
           docker_prune: true
           docker_clean: true
