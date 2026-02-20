@@ -35,12 +35,33 @@ jobs:
           echo "硬盘详情："
           df -Th
 
+      - name: Optimize Disk Space
+        uses: hugoalh/disk-space-optimizer-ghaction@main
+        with:
+          operate_sudo: false
+          general_include: ".+"
+          general_exclude: |-
+            ^GCC$
+            ^G\+\+$
+            Clang
+            LLVM
+          docker_include: ".+"
+          docker_prune: true
+          docker_clean: true
+          apt_prune: false
+          apt_clean: false
+          homebrew_prune: true
+          homebrew_clean: true
+          npm_prune: true
+          npm_clean: true
+          os_swap: true
+
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
           # this might remove tools that are actually needed,
           # if set to "true" but frees about 6 GB
-          tool-cache: true
+          tool-cache: false
           # all of these default to true, but feel free to set to
           # "false" if necessary for your workflow
           android: true
