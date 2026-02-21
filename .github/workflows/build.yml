@@ -138,7 +138,11 @@ jobs:
 
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
-        run: ./scripts/feeds update -a && ./scripts/feeds install -a
+        run: |
+          ./scripts/feeds update -a
+           rm -rf feeds/packages/lang/node
+           rm -rf feeds/packages/lang/node-*
+          ./scripts/feeds install -a
 
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
