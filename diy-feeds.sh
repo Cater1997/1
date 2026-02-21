@@ -10,16 +10,17 @@ src-git packages https://github.com/immortalwrt/packages.git;master
 src-git luci https://github.com/immortalwrt/luci.git;master
 src-git routing https://github.com/openwrt/routing.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
+src-git node https://github.com/nxhack/openwrt-node-packages.git;master
 EOF
 
 # 拉取软件包
 git clone -b main --single-branch https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
-git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns.git package/luci-app-mosdns
+git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns.git package/mosdns
 git clone -b master --single-branch https://github.com/sbwml/v2ray-geodata.git package/v2ray-geodata
-git clone -b master --single-branch https://github.com/sirpdboy/luci-app-netspeedtest.git package/luci-app-netspeedtest
+git clone -b master --single-branch https://github.com/sirpdboy/luci-app-netspeedtest.git package/netspeedtest
 git clone -b main --single-branch https://github.com/sirpdboy/luci-app-parentcontrol.git package/luci-app-parentcontrol
-git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/openwrt-passwall2
-git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/openwrt-passwall-packages
+git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall2.git package/passwall2
+git clone -b main --single-branch https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
 
 # 修改 luci-app-amlogic 配置
 sed -i 's#https://github.com/breakings/OpenWrt#https://github.com/ophub/kernel#g' package/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
