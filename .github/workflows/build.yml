@@ -41,7 +41,6 @@ jobs:
           operate_async: true
           operate_sudo: true
           general_include: ".+"
-          # general_exclude
           docker_include: ".+"
           docker_prune: true
           docker_clean: true
@@ -103,6 +102,20 @@ jobs:
         with:
            go-version: 'stable'
            check-latest: true
+           token: ${{ github.token }}
+           cache: true
+           cache-dependency-path: 'go.sum'
+           architecture: 'x64'
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: 'lts/*'
+          check-latest: true
+          architecture: 'x64'
+          token: ${{ github.server_url == 'https://github.com' && github.token || '' }}
+          cache: 'npm'
+          package-manager-cache: true
 
       - name: 克隆当前仓库 (Clone current repo)
         uses: actions/checkout@main
