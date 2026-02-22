@@ -1,7 +1,7 @@
-# 编辑默认 LAN 口 IP
+# 编辑 LAN 口 IP
 sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
 
-# 编辑默认固件名称
+# 编辑固件名称
 #sed -i 's/ImmortalWrt/ImmortalWrt1/g' package/base-files/files/bin/config_generate
 
 # 添加 feed 源
