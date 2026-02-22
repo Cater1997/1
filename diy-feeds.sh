@@ -10,7 +10,6 @@ src-git packages https://github.com/immortalwrt/packages.git;master
 src-git luci https://github.com/immortalwrt/luci.git;master
 src-git routing https://github.com/openwrt/routing.git;master
 src-git helloworld https://github.com/fw876/helloworld.git;master
-src-git node https://github.com/nxhack/openwrt-node-packages.git;master
 EOF
 
 # 拉取软件包
