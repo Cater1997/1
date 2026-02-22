@@ -139,15 +139,6 @@ jobs:
           chmod +x diy-config.sh
           ./diy-config.sh
 
-      - name: 设置 Rust 外部工具链
-        working-directory: immortalwrt
-        run: |
-          scripts/config --enable CONFIG_RUSTC_EXTERNAL
-          scripts/config --set-str CONFIG_RUSTC "${RUSTC}"
-          scripts/config --set-str CONFIG_CARGO "${CARGO}"
-          scripts/config --enable CONFIG_RUSTC_BUILD_STD
-          scripts/config --disable CONFIG_PACKAGE_rust
-
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
         uses: csexton/debugger-action@master
