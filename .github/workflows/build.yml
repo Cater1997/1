@@ -144,7 +144,6 @@ jobs:
         run: |
           echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
           echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
-          echo "RUSTFLAGS=-Zbuild-std" >> $GITHUB_ENV
 
       - name: 检查 Rust 配置
         working-directory: immortalwrt
