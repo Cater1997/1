@@ -92,10 +92,12 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           source "$HOME/.cargo/env"
-          rustup default nightly
-          rustup component add rust-src
+          rustup default stable
+          rustup target add aarch64-unknown-linux-musl
           rustc --version
           cargo --version
+          echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
+          echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
 
       - name: 安装 Go
         uses: actions/setup-go@main
@@ -128,10 +130,7 @@ jobs:
 
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: immortalwrt
-        run: |
-          ./scripts/feeds update -a
-          rm -rf feeds/packages/lang/rust
-          ./scripts/feeds install -a
+        run: ./scripts/feeds update -a && ./scripts/feeds install -a
 
       - name: 运行 diy-config.sh (Run diy-config.sh)
         working-directory: immortalwrt
@@ -140,17 +139,14 @@ jobs:
           chmod +x diy-config.sh
           ./diy-config.sh
 
-      - name: 设置 Rust 环境变量
-        run: |
-          echo "RUSTC=$HOME/.cargo/bin/rustc" >> $GITHUB_ENV
-          echo "CARGO=$HOME/.cargo/bin/cargo" >> $GITHUB_ENV
-
-      - name: 检查 Rust 配置
+      - name: 设置 Rust 外部工具链
         working-directory: immortalwrt
         run: |
-          grep -E "CONFIG_RUSTC_(EXTERNAL|BUILD_STD)" .config || echo "Not found"
-          grep "CONFIG_RUSTC=" .config
-          grep "CONFIG_CARGO=" .config
+          scripts/config --enable CONFIG_RUSTC_EXTERNAL
+          scripts/config --set-str CONFIG_RUSTC "${RUSTC}"
+          scripts/config --set-str CONFIG_CARGO "${CARGO}"
+          scripts/config --enable CONFIG_RUSTC_BUILD_STD
+          scripts/config --disable CONFIG_PACKAGE_rust
 
       - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
