@@ -158,12 +158,6 @@ jobs:
             immortalwrt/.config
           include-hidden-files: true
 
-      - name: 检查磁盘空间
-        working-directory: immortalwrt
-        run: |
-          df -h
-          du -sh dl build_dir staging_dir
-
       - name: 多线程编译 immortalwrt (Build immortalwrt multithreading)
         if: ${{inputs.multithreading == true}}
         working-directory: immortalwrt
@@ -173,20 +167,7 @@ jobs:
         if: ${{inputs.multithreading == false}}
         working-directory: immortalwrt
         run: make -j1 V=s
-      
-      - name: 调试构建镜像
-        if: failure()
-        working-directory: immortalwrt
-        run: |
-          make -j1 target/linux/install V=s 2>&1 | tee target_install.log
 
-      - name: 上传调试日志
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: target-install-log
-          path: immortalwrt/target_install.log
-     
       - name: Package OpenWrt Firmware
         uses: ophub/flippy-openwrt-actions@main
         env:
@@ -203,9 +184,7 @@ jobs:
           SELECT_OUTPUTPATH: output
           SAVE_OPENWRT_ROOTFS: true
           SCRIPT_E52C: mk_rk3588s_e52c.sh
-          SCRIPT_DIY_PATH: none
-          CUSTOMIZE_RK3399: none
-          WHOAMI: admin
+          WHOAMI: root
           OPENWRT_VER: auto
           SW_FLOWOFFLOAD: 1
           HW_FLOWOFFLOAD: 0
