@@ -11,6 +11,6 @@ src-git luci https://github.com/immortalwrt/luci.git;master
 src-git routing https://github.com/openwrt/routing.git;master
 EOF
 
-# 添加turboacc
+# 添加 turboacc
 curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 rm -f add_turboacc.sh
