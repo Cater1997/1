@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ssh:
-        description: "使用 ssh 连接到编译环境 (Connect to the build environment using ssh)"
+        description: "使用 SSH 连接到编译环境 (Connect to the build environment using SSH)"
         type: boolean
         default: false
       multithreading:
@@ -139,7 +139,7 @@ jobs:
           chmod +x diy-config.sh
           ./diy-config.sh
 
-      - name: 使用 ssh 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using ssh)
+      - name: 使用 SSH 连接到编译环境，限时15分钟，可在连接后输入命令 `touch /tmp/keepalive` 保活 (Connect to the build environment using SSH)
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
         uses: csexton/debugger-action@master
 
