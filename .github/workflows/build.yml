@@ -40,7 +40,8 @@ jobs:
         with:
           operate_async: true
           operate_sudo: true
-          general_include: ".+"
+          general_include: "$^"
+          general_exclude: ".+"
           docker_include: ".+"
           docker_prune: true
           docker_clean: true
